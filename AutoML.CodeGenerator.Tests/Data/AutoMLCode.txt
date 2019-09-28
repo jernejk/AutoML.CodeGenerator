@@ -1,0 +1,19 @@
+﻿using Microsoft.ML;
+using Microsoft.ML.AutoML;
+
+public ITransformer AutoTrain(MLContext mlContext, IDataView trainingDataView, uint maxTimeInSec)
+{
+    var columnInfo = new ColumnInformation { LabelColumnName = "Category" };
+    columnInfo.TextColumnNames.Add("Description");
+    columnInfo.CategoricalColumnNames.Add("Account");
+    columnInfo.NumericColumnNames.Add("Expense");
+
+    var experimentSettings = new MulticlassExperimentSettings();
+    experimentSettings.MaxExperimentTimeInSeconds = maxTimeInSec;
+
+    var experiment = mlContext.Auto().CreateMulticlassClassificationExperiment(experimentSettings);
+    var result = experiment.Execute(trainingDataView, columnInfo);
+
+    // Final model that can be used and/or evaluated.
+    return result.BestRun.Model;
+}

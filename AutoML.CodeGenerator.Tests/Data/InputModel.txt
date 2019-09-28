@@ -1,0 +1,37 @@
+﻿using Microsoft.ML.Data;
+
+namespace AutoML.CodeGenerator.Tests.Data
+{
+    public class InputModel
+    {
+        [ColumnName("Date"), LoadColumn(0)]
+        public string Date { get; set; }
+
+        [ColumnName("Account"), LoadColumn(1)]
+        public string Account { get; set; }
+
+        [ColumnName("Category"), LoadColumn(2)]
+        public string Category { get; set; }
+
+        [ColumnName("Tags"), LoadColumn(3)]
+        public string Tags { get; set; }
+
+        [ColumnName("Expense amount"), LoadColumn(4)]
+        public float Expense_amount { get; set; }
+
+        [ColumnName("Income amount"), LoadColumn(5)]
+        public float Income_amount { get; set; }
+
+        [ColumnName("Currency"), LoadColumn(6)]
+        public string Currency { get; set; }
+
+        [ColumnName("In main currency"), LoadColumn(7)]
+        public float In_main_currency { get; set; }
+
+        [ColumnName("Main currency"), LoadColumn(8)]
+        public string Main_currency { get; set; }
+
+        [ColumnName("Description"), LoadColumn(9)]
+        public string Description { get; set; }
+    }
+}

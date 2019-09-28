@@ -5,6 +5,12 @@ VisualStudioVersion = 16.0.29318.209
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoML.CodeGenerator.Blazor", "AutoML.CodeGenerator.Blazor\AutoML.CodeGenerator.Blazor.csproj", "{A30D9C21-D53B-48CD-9AA1-48A5712340B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoML.CodeGenerator.Tests", "AutoML.CodeGenerator.Tests\AutoML.CodeGenerator.Tests.csproj", "{37B061FB-03BD-43F9-8A63-C236B645EAE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoML.CodeGenerator.Core", "AutoML.CodeGenerator.Core\AutoML.CodeGenerator.Core.csproj", "{3982BB96-5491-41B4-BCA9-E14289D1D534}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoML.CodeGenerator.Csv", "AutoML.CodeGenerator.Csv\AutoML.CodeGenerator.Csv.csproj", "{A707BD80-D4FB-41A3-A474-A1B2808FB437}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{A30D9C21-D53B-48CD-9AA1-48A5712340B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A30D9C21-D53B-48CD-9AA1-48A5712340B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A30D9C21-D53B-48CD-9AA1-48A5712340B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37B061FB-03BD-43F9-8A63-C236B645EAE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37B061FB-03BD-43F9-8A63-C236B645EAE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37B061FB-03BD-43F9-8A63-C236B645EAE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37B061FB-03BD-43F9-8A63-C236B645EAE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3982BB96-5491-41B4-BCA9-E14289D1D534}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3982BB96-5491-41B4-BCA9-E14289D1D534}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3982BB96-5491-41B4-BCA9-E14289D1D534}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3982BB96-5491-41B4-BCA9-E14289D1D534}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A707BD80-D4FB-41A3-A474-A1B2808FB437}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A707BD80-D4FB-41A3-A474-A1B2808FB437}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A707BD80-D4FB-41A3-A474-A1B2808FB437}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A707BD80-D4FB-41A3-A474-A1B2808FB437}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
