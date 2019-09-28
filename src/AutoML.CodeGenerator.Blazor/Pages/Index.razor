@@ -1,7 +1,48 @@
 ﻿@page "/"
+@using AutoML.CodeGenerator.Core.CodeGeneration
+@using AutoML.CodeGenerator.Core.Data
+@inject AutoMLCodeQuery autoMLCodeGenerator
+@inject GenerateModelCodeQuery generateModelCode
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+<h2>AutoML code:</h2>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<pre>
+@autoMLCode
+</pre>
+
+<h2>InputModel code:</h2>
+
+<pre>
+@inputModelCode
+</pre>
+
+@code {
+    string autoMLCode = string.Empty;
+    string inputModelCode = string.Empty;
+    protected override void OnInitialized()
+    {
+        var columnDefinition = new ImportMetadata
+        {
+            ColumnDefinitions = new List<ColumnDefinition>
+            {
+                new ColumnDefinition
+                {
+                    Name = "Description",
+                    DataType = ColumnDataType.Text,
+                    MLType = ColumnMLType.Text
+                },
+                new ColumnDefinition
+                {
+                    Name = "Category",
+                    DataType = ColumnDataType.Text,
+                    MLType = ColumnMLType.Label
+                }
+            }
+        };
+
+        autoMLCode = autoMLCodeGenerator.Execute(columnDefinition);
+        inputModelCode = generateModelCode.Execute("InputModel", "AutoMLSample", columnDefinition.ColumnDefinitions);
+    }
+}

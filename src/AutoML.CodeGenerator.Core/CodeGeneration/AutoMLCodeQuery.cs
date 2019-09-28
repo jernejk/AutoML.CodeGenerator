@@ -27,8 +27,11 @@ using Microsoft.ML.AutoML;
 public ITransformer AutoTrain(MLContext mlContext, IDataView trainingDataView, uint maxTimeInSec)
 {{
 {columnDefinitionCode}
-    var experimentSettings = new MulticlassExperimentSettings();
-    experimentSettings.MaxExperimentTimeInSeconds = maxTimeInSec;
+    var experimentSettings = new MulticlassExperimentSettings()
+    {{
+        MaxExperimentTimeInSeconds = maxTimeInSec,
+        OptimizingMetric = MulticlassClassificationMetric.MacroAccuracy
+    }};
 
     var experiment = mlContext.Auto().CreateMulticlassClassificationExperiment(experimentSettings);
     var result = experiment.Execute(trainingDataView, columnInfo);

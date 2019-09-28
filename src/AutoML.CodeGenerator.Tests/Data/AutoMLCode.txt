@@ -8,8 +8,11 @@ public ITransformer AutoTrain(MLContext mlContext, IDataView trainingDataView, u
     columnInfo.CategoricalColumnNames.Add("Account");
     columnInfo.NumericColumnNames.Add("Expense");
 
-    var experimentSettings = new MulticlassExperimentSettings();
-    experimentSettings.MaxExperimentTimeInSeconds = maxTimeInSec;
+    var experimentSettings = new MulticlassExperimentSettings()
+    {
+        MaxExperimentTimeInSeconds = maxTimeInSec,
+        OptimizingMetric = MulticlassClassificationMetric.MacroAccuracy
+    };
 
     var experiment = mlContext.Auto().CreateMulticlassClassificationExperiment(experimentSettings);
     var result = experiment.Execute(trainingDataView, columnInfo);
