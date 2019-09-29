@@ -5,11 +5,59 @@
 @using AutoML.CodeGenerator.Csv
 @inject CsvToMetadataQuery csvToMetadata
 @inject AutoMLCodeQuery autoMLCodeGenerator
-@inject GenerateModelCodeQuery generateModelCode
+@inject GenerateInputModelCodeQuery generateInputModelCode
+@inject GenerateOutputModelCodeQuery generateOutputModelCode
 @inject DetermineColumnDefinitionsCommand determineColumnDefinitions
 
-<h1>Hello, world!</h1>
+<h1>Generate multi-classification AutoML code!</h1>
 
+<h2>CSV (headers only)</h2>
+
+<input type="text" @bind-value="@csv" style="width: 80%" />
+<button class="btn btn-primary" @onclick="ReadCsv">Read CSV</button>
+
+@if (metadata != null)
+{
+<h2>Column definitions</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Determined data type</th>
+            <th>ML Type</th>
+        </tr>
+    </thead>
+    @foreach (var def in metadata.ColumnDefinitions)
+    {
+    <tr>
+        <td>@def.Name</td>
+        <td>@def.DataType</td>
+        <td>
+            <select id="select-box" @bind="@def.MLType">
+                <option value=@ColumnMLType.Categorical>Categorical (hash)</option>
+                <option value=@ColumnMLType.Text>Text (tokenization)</option>
+                <option value=@ColumnMLType.Numeric>Numeric</option>
+                <option value=@ColumnMLType.Label>Label</option>
+                <option value=@ColumnMLType.Ignored>Ignored</option>
+                <option value=@ColumnMLType.ExampleWeight>Example Weight</option>
+                <option value=@ColumnMLType.SamplingKey>Sampling key</option>
+            </select>
+        </td>
+    </tr>
+    }
+</table>
+
+<div>
+    <label>Models namespace: </label>
+    <input type="text" @bind-value="@modelsNamespace" />
+</div>
+
+<button class="btn btn-primary" @onclick="GenerateCode">Generate code</button>
+}
+
+@if (!string.IsNullOrWhiteSpace(autoMLCode))
+{
 <h2>AutoML code:</h2>
 
 <pre>
@@ -22,19 +70,34 @@
 @inputModelCode
 </pre>
 
+<h2>OutputModel code:</h2>
+
+<pre>
+@outputModelCode
+</pre>
+}
+
 @code {
     string csv = "Description,Category";
     string autoMLCode = string.Empty;
     string inputModelCode = string.Empty;
-    protected override void OnInitialized()
+    string outputModelCode = string.Empty;
+    string modelsNamespace = "AutoMLSample";
+    ImportMetadata metadata;
+    void ReadCsv()
     {
-        var metadata = csvToMetadata.Execute(csv);
+        metadata = csvToMetadata.Execute(csv);
         determineColumnDefinitions.Execute(metadata);
 
-        metadata.ColumnDefinitions.First(c => c.Name == "Description").MLType = ColumnMLType.Categorical;
-        metadata.ColumnDefinitions.First(c => c.Name == "Category").MLType = ColumnMLType.Label;
+        metadata.ColumnDefinitions.Last().MLType = ColumnMLType.Label;
+        autoMLCode = string.Empty;
+        inputModelCode = string.Empty;
+    }
 
+    void GenerateCode()
+    {
         autoMLCode = autoMLCodeGenerator.Execute(metadata);
-        inputModelCode = generateModelCode.Execute("InputModel", "AutoMLSample", metadata.ColumnDefinitions);
+        inputModelCode = generateInputModelCode.Execute("InputModel", modelsNamespace, metadata.ColumnDefinitions);
+        outputModelCode = generateOutputModelCode.Execute("OutputModel", modelsNamespace, metadata.ColumnDefinitions);
     }
 }

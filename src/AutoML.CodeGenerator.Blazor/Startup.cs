@@ -13,7 +13,8 @@ namespace AutoML.CodeGenerator.Blazor
             services.AddTransient<CsvToMetadataQuery>();
             services.AddTransient<DetermineColumnDefinitionsCommand>();
             services.AddTransient<AutoMLCodeQuery>();
-            services.AddTransient<GenerateModelCodeQuery>();
+            services.AddTransient<GenerateInputModelCodeQuery>();
+            services.AddTransient<GenerateOutputModelCodeQuery>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

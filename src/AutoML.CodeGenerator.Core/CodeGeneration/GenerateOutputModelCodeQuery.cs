@@ -1,37 +1,26 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AutoML.CodeGenerator.Core.Data;
 
 namespace AutoML.CodeGenerator.Core.CodeGeneration
 {
-    public class GenerateModelCodeQuery
+    public class GenerateOutputModelCodeQuery
     {
         public string Execute(string className, string classNamespace, List<ColumnDefinition> columnDefinitions)
         {
-            int i = 0;
             bool hasNamespace = !string.IsNullOrWhiteSpace(classNamespace);
             string codeTab = "    ";
             string spacesForClass = hasNamespace ? codeTab : string.Empty;
             string spacesForProperties = spacesForClass + codeTab;
 
-            string propertyCode = string.Empty;
-            foreach (var columnDefinition in columnDefinitions)
-            {
-                if (!string.IsNullOrWhiteSpace(propertyCode))
-                {
-                    propertyCode += "\n\n";
-                }
-
-                string propertyName = columnDefinition.Name.Replace(" ", "_");
-                string type = columnDefinition.DataType == ColumnDataType.Number ? "float" : "string";
-                propertyCode += $"{spacesForProperties}[ColumnName(\"{columnDefinition.Name}\"), LoadColumn({i})]\n" +
-                    $"{spacesForProperties}public {type} {propertyName} {{ get; set; }}";
-
-                ++i;
-            }
+            var label = columnDefinitions.First(c => c.MLType == ColumnMLType.Label);
+            var labelDataType = label.DataType == ColumnDataType.Number ? "float" : "string";
 
             string code = @$"{spacesForClass}public class {className}
 {spacesForClass}{{
-{propertyCode}
+{spacesForProperties}[ColumnName(""PredictedLabel"")]
+{spacesForProperties}public {labelDataType} Prediction {{ get; set; }}
+{spacesForProperties}public float[] Score {{ get; set; }}
 {spacesForClass}}}";
 
             if (hasNamespace)

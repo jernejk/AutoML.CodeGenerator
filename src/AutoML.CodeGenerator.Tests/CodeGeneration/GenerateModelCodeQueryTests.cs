@@ -18,7 +18,7 @@ namespace AutoML.CodeGenerator.Tests.CodeGeneration
             string csContent = LoadFileContent("Data/InputModel.txt");
 
             var metadata = GetMetadataFromCsv(csvContent);
-            var generateModelCodeQuery = new GenerateModelCodeQuery();
+            var generateModelCodeQuery = new GenerateInputModelCodeQuery();
             var code = generateModelCodeQuery.Execute("InputModel", "AutoML.CodeGenerator.Tests.Data", metadata.ColumnDefinitions);
 
             // This make sure it passes on all platforms.
