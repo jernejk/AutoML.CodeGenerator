@@ -22,7 +22,7 @@ namespace AutoML.CodeGenerator.Csv
                 var column = new ColumnDefinition
                 {
                     Name = headers[i],
-                    FirstValue = firstRow[i]
+                    FirstValue = firstRow?[i]
                 };
 
                 metadata.ColumnDefinitions.Add(column);

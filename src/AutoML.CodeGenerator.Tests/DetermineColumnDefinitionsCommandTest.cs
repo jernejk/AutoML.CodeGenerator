@@ -43,5 +43,39 @@ namespace AutoML.CodeGenerator.Tests
             metadata.ColumnDefinitions[2].DataType.Should().Be(ColumnDataType.Number);
             metadata.ColumnDefinitions[2].MLType.Should().Be(ColumnMLType.Numeric);
         }
+
+        [Fact]
+
+        public void ShouldCorrectlySetColumnDefinitionsWithOnlyHeaders()
+        {
+            var metadata = new ImportMetadata
+            {
+                ColumnDefinitions = new List<ColumnDefinition>
+                {
+                    new ColumnDefinition
+                    {
+                        Name = "Date"
+                    },
+                    new ColumnDefinition
+                    {
+                        Name = "Category"
+                    },
+                    new ColumnDefinition
+                    {
+                        Name = "Expense"
+                    }
+                }
+            };
+
+            var command = new DetermineColumnDefinitionsCommand();
+            command.Execute(metadata);
+
+            metadata.ColumnDefinitions[0].DataType.Should().Be(ColumnDataType.Text);
+            metadata.ColumnDefinitions[0].MLType.Should().Be(ColumnMLType.Categorical);
+            metadata.ColumnDefinitions[1].DataType.Should().Be(ColumnDataType.Text);
+            metadata.ColumnDefinitions[1].MLType.Should().Be(ColumnMLType.Categorical);
+            metadata.ColumnDefinitions[2].DataType.Should().Be(ColumnDataType.Text);
+            metadata.ColumnDefinitions[2].MLType.Should().Be(ColumnMLType.Categorical);
+        }
     }
 }

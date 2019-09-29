@@ -8,7 +8,7 @@ namespace AutoML.CodeGenerator.Core
         {
             foreach (var column in metadata.ColumnDefinitions)
             {
-                bool isNumeric = double.TryParse(column.FirstValue, out _);
+                bool isNumeric = !string.IsNullOrWhiteSpace(column.FirstValue) && double.TryParse(column.FirstValue, out _);
                 if (isNumeric)
                 {
                     column.DataType = ColumnDataType.Number;

@@ -26,6 +26,21 @@ namespace AutoML.CodeGenerator.Tests.Csv
         }
 
         [Fact]
+        public void SimpleCsvWithOnlyHeadersTest()
+        {
+            string simpleCsv = "TextHeader,TextHeader2";
+
+            CsvToMetadataQuery query = new CsvToMetadataQuery();
+            var metadata = query.Execute(simpleCsv);
+
+            metadata.Should().NotBeNull();
+            metadata.ColumnDefinitions.Should().HaveCount(2);
+
+            ColumnShouldBe(metadata.ColumnDefinitions[0], "TextHeader", null);
+            ColumnShouldBe(metadata.ColumnDefinitions[1], "TextHeader2", null);
+        }
+
+        [Fact]
         public void DemoCsvTest()
         {
             string filePath = Path.Combine(AppContext.BaseDirectory, "Data/from-bank-mini.csv");
