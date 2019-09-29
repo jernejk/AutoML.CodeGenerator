@@ -1,8 +1,12 @@
 ﻿@page "/"
+@using AutoML.CodeGenerator.Core
 @using AutoML.CodeGenerator.Core.CodeGeneration
 @using AutoML.CodeGenerator.Core.Data
+@using AutoML.CodeGenerator.Csv
+@inject CsvToMetadataQuery csvToMetadata
 @inject AutoMLCodeQuery autoMLCodeGenerator
 @inject GenerateModelCodeQuery generateModelCode
+@inject DetermineColumnDefinitionsCommand determineColumnDefinitions
 
 <h1>Hello, world!</h1>
 
@@ -19,30 +23,18 @@
 </pre>
 
 @code {
+    string csv = "Description,Category";
     string autoMLCode = string.Empty;
     string inputModelCode = string.Empty;
     protected override void OnInitialized()
     {
-        var columnDefinition = new ImportMetadata
-        {
-            ColumnDefinitions = new List<ColumnDefinition>
-            {
-                new ColumnDefinition
-                {
-                    Name = "Description",
-                    DataType = ColumnDataType.Text,
-                    MLType = ColumnMLType.Text
-                },
-                new ColumnDefinition
-                {
-                    Name = "Category",
-                    DataType = ColumnDataType.Text,
-                    MLType = ColumnMLType.Label
-                }
-            }
-        };
+        var metadata = csvToMetadata.Execute(csv);
+        determineColumnDefinitions.Execute(metadata);
 
-        autoMLCode = autoMLCodeGenerator.Execute(columnDefinition);
-        inputModelCode = generateModelCode.Execute("InputModel", "AutoMLSample", columnDefinition.ColumnDefinitions);
+        metadata.ColumnDefinitions.First(c => c.Name == "Description").MLType = ColumnMLType.Categorical;
+        metadata.ColumnDefinitions.First(c => c.Name == "Category").MLType = ColumnMLType.Label;
+
+        autoMLCode = autoMLCodeGenerator.Execute(metadata);
+        inputModelCode = generateModelCode.Execute("InputModel", "AutoMLSample", metadata.ColumnDefinitions);
     }
 }

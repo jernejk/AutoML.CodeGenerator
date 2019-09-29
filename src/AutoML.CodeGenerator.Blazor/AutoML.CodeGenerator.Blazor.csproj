@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AutoML.CodeGenerator.Core\AutoML.CodeGenerator.Core.csproj" />
+    <ProjectReference Include="..\AutoML.CodeGenerator.Csv\AutoML.CodeGenerator.Csv.csproj" />
   </ItemGroup>
 
 </Project>
