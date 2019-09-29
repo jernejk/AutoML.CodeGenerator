@@ -15,6 +15,8 @@ namespace AutoML.CodeGenerator.Blazor
             services.AddTransient<AutoMLCodeQuery>();
             services.AddTransient<GenerateInputModelCodeQuery>();
             services.AddTransient<GenerateOutputModelCodeQuery>();
+            services.AddTransient<GenerateAutoMLTrainingSampleQuery>();
+            services.AddTransient<GenerateAutoMLConsumingSampleQuery>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

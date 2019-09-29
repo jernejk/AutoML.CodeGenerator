@@ -21,10 +21,7 @@ namespace AutoML.CodeGenerator.Core.CodeGeneration
 ";
             }
 
-            string template = $@"using Microsoft.ML;
-using Microsoft.ML.AutoML;
-
-public ITransformer AutoTrain(MLContext mlContext, IDataView trainingDataView, uint maxTimeInSec)
+            string template = $@"public static ITransformer AutoTrain(MLContext mlContext, IDataView trainingDataView, uint maxTimeInSec)
 {{
 {columnDefinitionCode}
     var experimentSettings = new MulticlassExperimentSettings()
@@ -38,7 +35,8 @@ public ITransformer AutoTrain(MLContext mlContext, IDataView trainingDataView, u
 
     // Final model that can be used and/or evaluated.
     return result.BestRun.Model;
-}}";
+}}
+";
 
             return template;
         }

@@ -1,7 +1,4 @@
-﻿using Microsoft.ML;
-using Microsoft.ML.AutoML;
-
-public ITransformer AutoTrain(MLContext mlContext, IDataView trainingDataView, uint maxTimeInSec)
+﻿public static ITransformer AutoTrain(MLContext mlContext, IDataView trainingDataView, uint maxTimeInSec)
 {
     var columnInfo = new ColumnInformation { LabelColumnName = "Category" };
     columnInfo.TextColumnNames.Add("Description");

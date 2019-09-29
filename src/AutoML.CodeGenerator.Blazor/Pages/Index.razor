@@ -8,6 +8,8 @@
 @inject GenerateInputModelCodeQuery generateInputModelCode
 @inject GenerateOutputModelCodeQuery generateOutputModelCode
 @inject DetermineColumnDefinitionsCommand determineColumnDefinitions
+@inject GenerateAutoMLTrainingSampleQuery generateAutoMlTrainingSample
+@inject GenerateAutoMLConsumingSampleQuery generateAutoMlConsumingSample
 
 <h1>Generate multi-classification AutoML code!</h1>
 
@@ -18,62 +20,96 @@
 
 @if (metadata != null)
 {
-<h2>Column definitions</h2>
+    <h2>Parameters for code generation</h2>
 
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Determined data type</th>
-            <th>ML Type</th>
-        </tr>
-    </thead>
-    @foreach (var def in metadata.ColumnDefinitions)
-    {
-    <tr>
-        <td>@def.Name</td>
-        <td>@def.DataType</td>
-        <td>
-            <select id="select-box" @bind="@def.MLType">
-                <option value=@ColumnMLType.Categorical>Categorical (hash)</option>
-                <option value=@ColumnMLType.Text>Text (tokenization)</option>
-                <option value=@ColumnMLType.Numeric>Numeric</option>
-                <option value=@ColumnMLType.Label>Label</option>
-                <option value=@ColumnMLType.Ignored>Ignored</option>
-                <option value=@ColumnMLType.ExampleWeight>Example Weight</option>
-                <option value=@ColumnMLType.SamplingKey>Sampling key</option>
-            </select>
-        </td>
-    </tr>
-    }
-</table>
+    <b>Column definitions:</b>
 
-<div>
-    <label>Models namespace: </label>
-    <input type="text" @bind-value="@modelsNamespace" />
-</div>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>ML Type</th>
+            </tr>
+        </thead>
+        @foreach (var def in metadata.ColumnDefinitions)
+        {
+            <tr>
+                <td>@def.Name</td>
+                <td>
+                    <select id="select-box" @bind="@def.MLType">
+                        <option value=@ColumnMLType.Categorical>Categorical (hash)</option>
+                        <option value=@ColumnMLType.Text>Text (tokenization)</option>
+                        <option value=@ColumnMLType.Numeric>Numeric</option>
+                        <option value=@ColumnMLType.Label>Label</option>
+                        <option value=@ColumnMLType.Ignored>Ignored</option>
+                        <option value=@ColumnMLType.ExampleWeight>Example Weight</option>
+                        <option value=@ColumnMLType.SamplingKey>Sampling key</option>
+                    </select>
+                </td>
+            </tr>
+        }
+    </table>
 
-<button class="btn btn-primary" @onclick="GenerateCode">Generate code</button>
+    <br/>
+    <b>Code namespaces:</b>
+
+    <div>
+        <label>Models namespace: </label>
+        <input type="text" @bind-value="@modelsNamespace" />
+    </div>
+
+    <div>
+        <label>Sample training namespace: </label>
+        <input type="text" @bind-value="@trainingNamespace" />
+    </div>
+
+    <div>
+        <label>Sample consumption namespace: </label>
+        <input type="text" @bind-value="@consumptionNamespace" />
+    </div>
+
+    <button class="btn btn-primary" @onclick="GenerateCode">Generate code</button>
 }
 
 @if (!string.IsNullOrWhiteSpace(autoMLCode))
 {
-<h2>AutoML code:</h2>
+    <h2>AutoML code:</h2>
+
+    <b>Namespaces</b>
+
+<pre>
+using Microsoft.ML;
+using Microsoft.ML.AutoML;
+</pre>
+
+    <b>C# method:</b>
 
 <pre>
 @autoMLCode
 </pre>
 
-<h2>InputModel code:</h2>
+    <h2>InputModel code:</h2>
 
 <pre>
 @inputModelCode
 </pre>
 
-<h2>OutputModel code:</h2>
+    <h2>OutputModel code:</h2>
 
 <pre>
 @outputModelCode
+</pre>
+
+    <h2>Sample Console training app</h2>
+
+<pre>
+@sampleTrainingCode
+</pre>
+
+    <h2>Sample Console consumption app</h2>
+
+<pre>
+@sampleConsumingCode
 </pre>
 }
 
@@ -82,7 +118,11 @@
     string autoMLCode = string.Empty;
     string inputModelCode = string.Empty;
     string outputModelCode = string.Empty;
-    string modelsNamespace = "AutoMLSample";
+    string modelsNamespace = "AutoMLSample.Models";
+    string trainingNamespace = "AutoMLSample.ML";
+    string consumptionNamespace = "AutoMLSample.App";
+    string sampleTrainingCode = string.Empty;
+    string sampleConsumingCode = string.Empty;
     ImportMetadata metadata;
     void ReadCsv()
     {
@@ -97,7 +137,9 @@
     void GenerateCode()
     {
         autoMLCode = autoMLCodeGenerator.Execute(metadata);
-        inputModelCode = generateInputModelCode.Execute("InputModel", modelsNamespace, metadata.ColumnDefinitions);
-        outputModelCode = generateOutputModelCode.Execute("OutputModel", modelsNamespace, metadata.ColumnDefinitions);
+        inputModelCode = generateInputModelCode.Execute("ModelInput", modelsNamespace, metadata.ColumnDefinitions);
+        outputModelCode = generateOutputModelCode.Execute("ModelOutput", modelsNamespace, metadata.ColumnDefinitions);
+        sampleTrainingCode = generateAutoMlTrainingSample.Execute(metadata, trainingNamespace, modelsNamespace);
+        sampleConsumingCode = generateAutoMlConsumingSample.Execute(metadata, consumptionNamespace, modelsNamespace);
     }
 }
