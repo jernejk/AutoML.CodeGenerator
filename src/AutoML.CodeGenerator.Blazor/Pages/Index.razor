@@ -50,7 +50,7 @@
         }
     </table>
 
-    <br/>
+    <br />
     <b>Code namespaces:</b>
 
     <div>
@@ -73,44 +73,44 @@
 
 @if (!string.IsNullOrWhiteSpace(autoMLCode))
 {
+    <hr />
+    <br />
+
+    <h2>Required Nuget packages</h2>
+
+    <ul>
+        <li>Microsoft.ML (1.3.1+)</li>
+        <li>Microsoft.ML.AutoML (0.15.1+)</li>
+    </ul>
+
     <h2>AutoML code:</h2>
 
     <b>Namespaces</b>
 
-<pre>
+<pre><code>
 using Microsoft.ML;
 using Microsoft.ML.AutoML;
-</pre>
+</code></pre>
 
     <b>C# method:</b>
 
-<pre>
-@autoMLCode
-</pre>
+<pre><code>@autoMLCode</code></pre>
 
     <h2>InputModel code:</h2>
 
-<pre>
-@inputModelCode
-</pre>
+<pre><code>@inputModelCode</code></pre>
 
     <h2>OutputModel code:</h2>
 
-<pre>
-@outputModelCode
-</pre>
+<pre><code>@outputModelCode</code></pre>
 
     <h2>Sample Console training app</h2>
 
-<pre>
-@sampleTrainingCode
-</pre>
+<pre><code>@sampleTrainingCode</code></pre>
 
     <h2>Sample Console consumption app</h2>
 
-<pre>
-@sampleConsumingCode
-</pre>
+<pre><code>@sampleConsumingCode</code></pre>
 }
 
 @code {
