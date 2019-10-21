@@ -8,19 +8,14 @@
     }
   },
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
     "AutoML.CodeGenerator.Blazor": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
+      "commandLineArgs": "--pathbase=/AutoML.CodeGenerator",
+      "launchUrl": "http://localhost:51929/AutoML.CodeGenerator",
       "applicationUrl": "http://localhost:51929/"
     }
   }

@@ -11,15 +11,19 @@
 @inject GenerateAutoMLTrainingSampleQuery generateAutoMlTrainingSample
 @inject GenerateAutoMLConsumingSampleQuery generateAutoMlConsumingSample
 
-<h1>Generate multi-classification AutoML code (<a href="https://dotnet.microsoft.com/apps/machinelearning-ai/ml-dotnet">ML.NET</a> 1.4)!</h1>
+<h1>Generate multi-classification AutoML code (<a href="https://dotnet.microsoft.com/apps/machinelearning-ai/ml-dotnet">ML.NET</a> 1.3+)!</h1>
 
+<br />
 <h2>CSV (headers only)</h2>
+
+Enter CSV headers (comma separated) which will be used to generate the columns.
 
 <input type="text" @bind-value="@csv" style="width: 80%" />
 <button class="btn btn-primary" @onclick="ReadCsv">Read CSV</button>
 
 @if (metadata != null)
 {
+    <br />
     <h2>Parameters for code generation</h2>
 
     <b>Column definitions:</b>
@@ -40,7 +44,7 @@
                         <option value=@ColumnMLType.Categorical>Categorical (hash)</option>
                         <option value=@ColumnMLType.Text>Text (tokenization)</option>
                         <option value=@ColumnMLType.Numeric>Numeric</option>
-                        <option value=@ColumnMLType.Label>Label</option>
+                        <option value=@ColumnMLType.Label>Label (predicted value)</option>
                         <option value=@ColumnMLType.Ignored>Ignored</option>
                         <option value=@ColumnMLType.ExampleWeight>Example Weight</option>
                         <option value=@ColumnMLType.SamplingKey>Sampling key</option>
@@ -111,6 +115,9 @@ using Microsoft.ML.AutoML;
     <h2>Sample Console consumption app</h2>
 
 <pre><code>@sampleConsumingCode</code></pre>
+
+<br />
+
 }
 
 @code {
