@@ -1,3 +1,5 @@
+**NOTE:** Latest ML.NET Model Builder does solve the original problem of being unable to change column types. The generator is still useful, if you want to make your of custom ML.NET AutoML code. (ML.NET Model Builder will use a fix training algorithm once generated not AutoML API)
+
 # Browser Code Generator for ML.NET
 
 This project is used to demonstrate how to write ML.NET code to train and consume data.
