@@ -1,0 +1,31 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "19:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: CsvHelper
+    versions:
+    - 21.3.0
+    - 21.3.1
+    - 22.1.0
+    - 22.1.1
+    - 22.1.2
+    - 23.0.0
+    - 24.0.0
+    - 24.0.1
+    - 25.0.0
+    - 26.0.0
+    - 26.0.1
+    - 26.1.0
+    - 27.0.1
+  - dependency-name: Microsoft.NET.Test.Sdk
+    versions:
+    - 16.8.3
+    - 16.9.1
+  - dependency-name: coverlet.collector
+    versions:
+    - 3.0.2
